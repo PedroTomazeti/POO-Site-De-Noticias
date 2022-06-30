@@ -48,8 +48,8 @@ create table admin(
 
 create table noticia(
     id int not null auto_increment,
-    titulo varchar(80) not null,
-    lide varchar(50) not null,
+    titulo varchar(120) not null,
+    lide varchar(90) not null,
     corpo text not null,
     data varchar(10) not null,
     primary key(id)

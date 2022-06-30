@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns="http://www.w3.org//1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ASSINANTES</title>
+  <!-- CSS only -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+  <!-- JavaScript Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</head>
+<body>
+<header class="p-3 bg-dark text-white">
+  <div class="container">
+    <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+      <img src="">
+
+      <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <li><a href="/" class="nav-link px-2 text-secondary">Home</a></li>
+        <li><a href="/admin-login/login" class="nav-link px-2 text-white">Administradores</a></li>
+        <li><a href="/main-noticias/menu-noticias" class="nav-link px-2 text-white">Notícias</a></li>
+        <li><a href="/main-noticias/new-noticias" class="nav-link px-2 text-white">Editor</a></li>
+        <li><a href="/main-noticias/add-noticias" class="nav-link px-2 text-white">Adicionar Notícias</a></li>
+      </ul>
+      <div class="text-end">
+        <a href="/admin-login/add-admin"><button type="button" class="btn btn-warning">Sign-up</button></a>
+      </div>
+    </div>
+  </div>
+</header>
+<section layout:fragment="content">
+  <div class="card-header">
+  </div>
+  <h4 th:if="${admin.isEmpty()}">Nenhum registro encontrado!<br>Adicione em Sign-up.</h4>
+  <div th:if="${!admin.isEmpty()}">
+    <table id="tblAdmin">
+      <thead>
+      <tr>
+        <th>Usuário</th>
+        <th>Email</th>
+        <th>Edit</th>
+        <th>Delete</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="adm: ${admin}">
+        <td th:text="${adm.usuario}"></td>
+        <td th:text="${adm.email}"></td>
+        <td><a th:href="@{/admin-login/edit/{id}(id=${adm.id})}"><button>Editar</button></a></td>
+        <td><a th:href="@{/admin-login/delete/{id}(id=${adm.id})}" id="btnDelete"
+               class="delete"
+               data-confirm="Confirma a exclusão?"><button>Deletar</button></a></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+  <script th:src="@{/webjars/bootstrap/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/webjars/datatables/js/jquery.dataTables.min.js}"></script>
+  <script>
+                var deleteLinks = document.querySelectorAll('.delete');
+
+                for (var i = 0; i < deleteLinks.length; i++) {
+                    deleteLinks[i].addEventListener('click', function (event) {
+                        event.preventDefault();
+
+                        var choice = confirm(this.getAttribute('data-confirm'));
+
+                        if (choice) {
+                            window.location.href = this.getAttribute('href');
+                        }
+                    });
+                }
+
+                //Menu Toggle Script
+                $("#menu-toggle").click(function (e) {
+                    e.preventDefault();
+                    $("#wrapper").toggleClass("toggled");
+                });
+
+                $(document).ready(function () {
+                    $('#myTable').DataTable();
+                });
+            </script>
+</section>
+</body>
+</html>
